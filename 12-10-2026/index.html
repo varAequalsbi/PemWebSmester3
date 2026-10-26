@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bermain main dengan CSs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #747070;
+        }
+        h1 {
+            color: #eae6e6;
+        }
+
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 style="text-align: center;" id="title" >Selamat datang di sandbox bermain CSS</h1>
+    <p style="color: aliceblue; font-size: large;"> Pilih Button di bawah ini untuk meengganti warna text di atas</p>
+    <br>
+    <div style="background-color: red; width: 30%; height: 30px; border-radius: 10px; text-align: center; color: white; font-size: large;">Red</div>
+        <input type="range" name="slider-color" id="red" style="width: 30%;" min="0" max="255"> 
+    </div>
+    <br>
+    <div style="background-color: green; width: 30%; height: 30px; border-radius: 10px; text-align: center; color: white; font-size: large;">Green</div>
+        <input type="range" name="slider-color" id="green" style="width: 30%;" min="0" max="255">
+    </div>
+    <br>    
+    <div style="background-color: blue; width: 30%; height: 30px; border-radius: 10px; text-align: center; color: white; font-size: large;">Blue</div>
+        <input type="range" name="slider-color" id="blue" style="width: 30%;" min="0" max="255">
+    </div>
+    <br>
+    <button type="button" id="randomizeBtn" style="height: 100px; width: 200px; font-size: larger; background-color: #ccc;">Randomize!</button>
+    <button type="button" id="rainbowBtn" style="height: 100px; width: 200px; font-size: larger; background-color: #ccc;">Rainbow!</button>
+</body>
+    <script>
+
+        var redSlider = document.getElementById("red");
+        var greenSlider = document.getElementById("green");
+        var blueSlider = document.getElementById("blue");
+        var rainbowInterval = null;
+        var selectedColor = "";
+
+        redSlider.addEventListener("input", updateColor);
+        greenSlider.addEventListener("input", updateColor);
+        blueSlider.addEventListener("input", updateColor);
+
+        function updateColor() {
+            if (rainbowInterval !== null) stopRainbow();
+            var red = redSlider.value;
+            var green = greenSlider.value;
+            var blue = blueSlider.value;
+
+            var color = "rgb(" + red + "," + green + "," + blue + ")";
+            document.getElementById("title").style.color = color;
+        }
+
+        document.getElementById("randomizeBtn").addEventListener("click", function() {
+            var randomRed = Math.floor(Math.random() * 256);
+            var randomGreen = Math.floor(Math.random() * 256);
+            var randomBlue = Math.floor(Math.random() * 256);
+
+            redSlider.value = randomRed;
+            greenSlider.value = randomGreen;
+            blueSlider.value = randomBlue;
+
+            updateColor();
+        });
+
+        document.getElementById("rainbowBtn").addEventListener("click", function() {
+            if (rainbowInterval !== null) {
+                stopRainbow();
+                document.getElementById("title").style.color = selectedColor;
+            } else {
+                selectedColor = document.getElementById("title").style.color;
+                startRainbow();
+            }
+        });
+        function startRainbow() {
+            var rainbowColors = [
+                "red", "orange", "yellow", "green", "blue", "indigo", "violet"
+            ];
+            var index = 0;
+            document.getElementById("title").style.color = rainbowColors[index];
+            rainbowInterval = setInterval(function() {
+                index = (index + 1) % rainbowColors.length;
+                document.getElementById("title").style.color = rainbowColors[index];
+            }, 500);
+        }
+
+        function stopRainbow() {
+            clearInterval(rainbowInterval);
+            rainbowInterval = null;
+        }
+
+    </script>
+</html>
